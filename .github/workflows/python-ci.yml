@@ -33,7 +33,7 @@ jobs:
     - name: Lint with flake8
       working-directory: ./labs/app_python
       run: |
-        flake8 . --count --max-complexity=10 --statistics || true  
+        flake8 . --count --max-complexity=10 --statistics || exit 0  
     - name: Run tests with pytest
       working-directory: ./labs/app_python
       run: |
