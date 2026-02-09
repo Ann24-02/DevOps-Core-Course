@@ -48,11 +48,15 @@ The workflow is configured to run:
 
 ✅ **GitHub Actions Execution**: Python CI/CD Pipeline #7
 
-> Replace with actual run link from GitHub Actions tab
+> (https://github.com/Ann24-02/DevOps-Core-Course/actions/runs/21811457877)
+
+![CI/CD Success](screenshots/github_actions_lab03.png)  
+
 
 ### Local Test Execution
 
 ✅ **All Tests Pass Locally**
+![Tests pass](screenshots/tests_lab03.png)  
 
 ```bash
 cd labs/app_python
@@ -69,6 +73,7 @@ collected 14 items
 ### Docker Hub Repository
 
 ✅ **Published Docker Image**: `nayaya0/devops-info-service`
+![Docker Hub tags](screenshots/docker_hub.png)  
 
 Available tags:
 
@@ -112,7 +117,9 @@ Available tags:
 ### 5. Status Badges
 
 - **Why**: Instant CI health visibility
-- **Implementation**: Badge in main README
+- **Implementation**: Badge in main README 
+
+
 
 ### Performance Metrics
 
