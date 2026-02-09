@@ -40,12 +40,11 @@ jobs:
         pip install -r requirements.txt
     
     - name: Run Snyk Security Scan
-      uses: snyk/actions/python@master
+      run: |
+        cd labs/app_python
+        npx snyk test --severity-threshold=high
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        working-directory: ./labs/app_python
-        args: --severity-threshold=high
     
     - name: Lint with flake8
       working-directory: ./labs/app_python
