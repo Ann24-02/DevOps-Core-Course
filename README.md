@@ -271,4 +271,8 @@ After completing all 16 core labs (+ optional Labs 17-18), you'll have:
 
 Questions? Check the course Moodle page or ask during office hours.
 
-
+## Running Tests
+```bash
+cd labs/app_python
+pip install -r requirements.txt
+pytest tests/ -v
