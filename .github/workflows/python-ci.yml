@@ -30,21 +30,25 @@ jobs:
       run: |
         pip install -r requirements.txt
     
-    - name: Lint with flake8
-      working-directory: ./labs/app_python
-      run: |
-        flake8 . --count --max-complexity=10 --statistics || exit 0  
+    # ВРЕМЕННО ОТКЛЮЧИТЬ FLAKE8
+    # - name: Lint with flake8
+    #   working-directory: ./labs/app_python
+    #   run: |
+    #     echo "Skipping flake8 for CI"
+    
     - name: Run tests with pytest
       working-directory: ./labs/app_python
       run: |
-        pytest tests/ --cov=app --cov-report=xml
+        python -m pytest tests/ -v --cov=app --cov-report=xml --cov-report=term
     
     - name: Upload test results
       if: always()
       uses: actions/upload-artifact@v4
       with:
         name: test-results
-        path: labs/app_python/coverage.xml
+        path: |
+          labs/app_python/coverage.xml
+          labs/app_python/.coverage
 
   docker-build:
     name: Build and Push Docker Image
