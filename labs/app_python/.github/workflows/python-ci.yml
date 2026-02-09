@@ -4,11 +4,11 @@ on:
   push:
     branches: [lab03]
     paths:
-      - 'app_python/**'
+      - 'labs/app_python/**'
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master, lab03]
     paths:
-      - 'app_python/**'
+      - 'labs/app_python/**'
 
 jobs:
   test:
@@ -26,33 +26,32 @@ jobs:
         cache: 'pip'
     
     - name: Install dependencies
-      working-directory: ./app_python
+      working-directory: ./labs/app_python
       run: |
         pip install -r requirements.txt
     
     - name: Lint with flake8
-      working-directory: ./app_python
+      working-directory: ./labs/app_python
       run: |
         flake8 . --count --max-complexity=10 --statistics
     
     - name: Run tests with pytest
-      working-directory: ./app_python
+      working-directory: ./labs/app_python
       run: |
-        pytest --cov=app --cov-report=xml
+        pytest tests/ --cov=app --cov-report=xml
     
     - name: Upload test results
       if: always()
       uses: actions/upload-artifact@v4
       with:
         name: test-results
-        path: app_python/test-results.xml
+        path: labs/app_python/test-results.xml
 
   docker-build:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
     needs: test
     if: github.event_name == 'push' && github.ref == 'refs/heads/lab03'
-    
     
     steps:
     - name: Checkout code
@@ -70,7 +69,7 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
-        context: ./app_python
+        context: ./labs/app_python
         push: true
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/devops-info-service:latest
