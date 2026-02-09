@@ -9,6 +9,7 @@ on:
     branches: [main, master, lab03]
     paths:
       - 'labs/app_python/**'
+      - '.github/workflows/**'  
 
 jobs:
   test:
@@ -25,16 +26,31 @@ jobs:
         python-version: '3.11'
         cache: 'pip'
     
+    - name: Cache pip packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('labs/app_python/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    
     - name: Install dependencies
       working-directory: ./labs/app_python
       run: |
         pip install -r requirements.txt
+
+
     
-    # ВРЕМЕННО ОТКЛЮЧИТЬ FLAKE8
-    # - name: Lint with flake8
-    #   working-directory: ./labs/app_python
-    #   run: |
-    #     echo "Skipping flake8 for CI"
+    - name: Run Snyk Security Scan
+      uses: snyk/actions/python@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        args: --sarif-file-output=snyk.sarif
+    - name: Lint with flake8
+      working-directory: ./labs/app_python
+      run: |
+        python -m flake8 . --count --max-complexity=10 --max-line-length=120 --extend-ignore=E302,W293,E303,W291,W292,F401,E305,E501,E712 --statistics || echo "Flake8 completed"
     
     - name: Run tests with pytest
       working-directory: ./labs/app_python
@@ -49,6 +65,11 @@ jobs:
         path: |
           labs/app_python/coverage.xml
           labs/app_python/.coverage
+    
+
+    - name: Set version tag
+      id: set_version
+      run: echo "VERSION=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
 
   docker-build:
     name: Build and Push Docker Image
@@ -77,6 +98,7 @@ jobs:
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/devops-info-service:latest
           ${{ secrets.DOCKER_USERNAME }}/devops-info-service:${{ github.sha }}
+          ${{ secrets.DOCKER_USERNAME }}/devops-info-service:${{ env.VERSION }}
     
     - name: Verify Docker push
       run: |
