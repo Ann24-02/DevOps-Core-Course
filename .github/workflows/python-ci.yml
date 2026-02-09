@@ -45,7 +45,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: test-results
-        path: labs/app_python/test-results.xml
+        path: labs/app_python/coverage.xml
 
   docker-build:
     name: Build and Push Docker Image
