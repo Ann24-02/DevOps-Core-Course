@@ -161,3 +161,4 @@ docker rm <container-name>    # Remove container
 docker rmi <image-name>       # Remove image
 docker system prune -a        # Cleanup unused resources
 ```
+# Trigger CI/CD
