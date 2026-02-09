@@ -3,6 +3,7 @@
 [![Labs](https://img.shields.io/badge/Labs-18-blue)](#labs)
 [![Exam](https://img.shields.io/badge/Exam-Optional-green)](#exam-alternative)
 [![Duration](https://img.shields.io/badge/Duration-18%20Weeks-lightgrey)](#course-roadmap)
+![CI/CD](https://github.com/Ann24-02/DevOps-Core-Course/actions/workflows/python-ci.yml/badge.svg?branch=lab03)
 
 Master **production-grade DevOps practices** through hands-on labs. Build, containerize, deploy, monitor, and scale applications using industry-standard tools.
 
@@ -269,3 +270,9 @@ After completing all 16 core labs (+ optional Labs 17-18), you'll have:
 **Ready to begin? Start with [Lab 1](labs/lab01.md)!**
 
 Questions? Check the course Moodle page or ask during office hours.
+
+## Running Tests
+```bash
+cd labs/app_python
+pip install -r requirements.txt
+pytest tests/ -v
