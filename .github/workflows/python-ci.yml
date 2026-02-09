@@ -40,7 +40,6 @@ jobs:
         pip install -r requirements.txt
     
     - name: Run Snyk Security Scan
-      if: secrets.SNYK_TOKEN != ''  # Проверка наличия токена
       uses: snyk/actions/python@master
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
