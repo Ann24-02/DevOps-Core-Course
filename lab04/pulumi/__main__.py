@@ -2,18 +2,18 @@ import pulumi
 from pulumi_yandex import compute_instance, Provider
 
 # Данные для подключения к Yandex Cloud (явно в коде)
-YC_TOKEN = "y0__xCpgL6EBxjB3RMgv7aTvBYdq2uKFnc4oXS-kiIFRkqkBoMz1Q"
-YC_CLOUD_ID = "b1grjkl08ph28r9m1eua"
-YC_FOLDER_ID = "b1guk6ca13s7mtidd5c2"
-YC_ZONE = "ru-central1-a"
+YC_TOKEN = ""
+YC_CLOUD_ID = ""
+YC_FOLDER_ID = ""
+YC_ZONE = ""
 
 # Получаем SSH ключ из конфигурации Pulumi
 config = pulumi.Config()
 ssh_public_key = config.require_secret("ssh_public_key")
 
 # Данные из Terraform VM
-subnet_id = "e9bpv38qs25mdbr17bcp"
-image_id = "fd8q1krrgc5pncjckeht"
+subnet_id = ""
+image_id = ""
 
 # Создаем провайдера с УНИКАЛЬНЫМ именем (не 'yandex')
 yandex_provider = Provider("yandex-cloud-provider",  # Уникальное имя!
