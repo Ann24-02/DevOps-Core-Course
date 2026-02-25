@@ -1,0 +1,5 @@
+yc_token    = ""
+cloud_id    = ""
+folder_id   = ""
+zone        = ""
+ssh_public_key = ""
