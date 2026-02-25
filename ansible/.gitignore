@@ -1,0 +1,33 @@
+# Ansible
+*.retry
+.vault_pass
+.vault_password
+.vault-pass
+.vault_pass.txt
+.vault-password-file
+vault.pass
+vault-pass
+
+# Secrets
+inventory/group_vars/all.yml
+!inventory/group_vars/example.yml
+group_vars/all.yml
+!group_vars/example.yml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Local files
+.DS_Store
+*.local

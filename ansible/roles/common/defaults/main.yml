@@ -1,0 +1,11 @@
+---
+common_packages:
+  - python3-pip
+  - python3-venv
+  - curl
+  - git
+  - vim
+  - htop
+  - tree
+  - net-tools
+  - wget

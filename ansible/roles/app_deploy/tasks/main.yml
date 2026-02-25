@@ -1,0 +1,46 @@
+---
+- name: Log in to Docker Hub
+  docker_login:
+    username: "{{ dockerhub_username }}"
+    password: "{{ dockerhub_password }}"
+  no_log: true
+
+- name: Pull Docker image
+  docker_image:
+    name: "{{ dockerhub_username }}/{{ app_name }}"
+    source: pull
+
+- name: Stop existing container
+  docker_container:
+    name: "{{ app_name }}"
+    state: absent
+  ignore_errors: yes
+
+- name: Run new container
+  docker_container:
+    name: "{{ app_name }}"
+    image: "{{ dockerhub_username }}/{{ app_name }}"
+    state: started
+    restart_policy: unless-stopped
+    ports:
+      - "{{ app_port }}:{{ app_port }}"
+    env:
+       PORT: "{{ app_port | string }}"
+
+- name: Wait for application to be ready
+  wait_for:
+    port: "{{ app_port }}"
+    host: "{{ ansible_host }}"
+    delay: 5
+    timeout: 30
+
+- name: Check health endpoint
+  uri:
+    url: "http://{{ ansible_host }}:{{ app_port }}/health"
+    method: GET
+    status_code: 200
+  register: health_check
+
+- name: Display health check result
+  debug:
+    msg: "Health check: {{ health_check.status }}"

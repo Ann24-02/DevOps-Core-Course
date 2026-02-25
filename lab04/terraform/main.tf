@@ -1,22 +1,19 @@
-# Получаем последний образ Ubuntu
+# Используем образ Ubuntu 22.04
 data "yandex_compute_image" "ubuntu" {
-  family = "ubuntu-2404-lts-oslogin"
+  family = "ubuntu-2204-lts"
 }
 
-# Получаем существующую сеть (измените имя если нужно)
+# Используем существующую сеть
 data "yandex_vpc_network" "existing" {
-  name = "default"  # Или название вашей существующей сети
+  name = "default"
 }
 
-# Получаем существующую подсеть (измените имя если нужно)
 data "yandex_vpc_subnet" "existing" {
-  name = "default-ru-central1-a"  # Или название вашей подсети
-  
+  name = "default-ru-central1-a"
 }
 
-# Создаем виртуальную машину
-resource "yandex_compute_instance" "lab4_vm" {
-  name        = "lab4-vm"
+resource "yandex_compute_instance" "lab_vm" {
+  name        = "lab-vm-final"
   platform_id = "standard-v3"
   zone        = var.zone
 
@@ -29,30 +26,25 @@ resource "yandex_compute_instance" "lab4_vm" {
     initialize_params {
       image_id = data.yandex_compute_image.ubuntu.id
       size     = 10
-      type     = "network-hdd"
     }
   }
 
   network_interface {
-    subnet_id = data.yandex_vpc_subnet.existing.id  # Используем существующую подсеть
+    subnet_id = data.yandex_vpc_subnet.existing.id
     nat       = true
   }
 
   metadata = {
-    ssh-keys = "ubuntu:${var.ssh_public_key}"
-  }
-
-  labels = {
-    project = "lab4"
-    tool    = "terraform"
+    user-data = "#cloud-config\nusers:\n  - name: ubuntu\n    ssh-authorized-keys:\n      - ${var.ssh_public_key}\n    sudo: ['ALL=(ALL) NOPASSWD:ALL']\n    shell: /bin/bash"
+    enable-oslogin = "false"
   }
 }
 
-# Создаем группу безопасности
-resource "yandex_vpc_security_group" "lab4_sg" {
-  name        = "lab4-security-group"
-  description = "Security group for Lab 4"
-  network_id  = data.yandex_vpc_network.existing.id  # Используем существующую сеть
+# Простая группа безопасности
+resource "yandex_vpc_security_group" "lab_sg" {
+  name        = "lab-sg-final"
+  description = "Security group"
+  network_id  = data.yandex_vpc_network.existing.id
 
   ingress {
     protocol       = "TCP"
@@ -61,39 +53,16 @@ resource "yandex_vpc_security_group" "lab4_sg" {
     v4_cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
-    protocol       = "TCP"
-    description    = "HTTP"
-    port           = 80
-    v4_cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    protocol       = "TCP"
-    description    = "App port"
-    port           = 5000
-    v4_cidr_blocks = ["0.0.0.0/0"]
-  }
-
   egress {
     protocol       = "ANY"
-    description    = "Any outgoing traffic"
     v4_cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
-# Выходные данные
 output "vm_ip" {
-  description = "Public IP address of VM"
-  value       = yandex_compute_instance.lab4_vm.network_interface.0.nat_ip_address
+  value = yandex_compute_instance.lab_vm.network_interface.0.nat_ip_address
 }
 
 output "ssh_command" {
-  description = "SSH connection command"
-  value       = "ssh -i ~/.ssh/yandex_cloud ubuntu@${yandex_compute_instance.lab4_vm.network_interface.0.nat_ip_address}"
-}
-
-output "vm_name" {
-  description = "VM name"
-  value       = yandex_compute_instance.lab4_vm.name
+  value = "ssh -i ~/.ssh/lab5-final ubuntu@${yandex_compute_instance.lab_vm.network_interface.0.nat_ip_address}"
 }
