@@ -64,3 +64,4 @@ jobs:
           sleep 10
           curl -f http://${{ secrets.VM_HOST }}:8080/health || exit 1
           echo "✅ Application is healthy!"
+#
