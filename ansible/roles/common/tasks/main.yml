@@ -1,19 +1,84 @@
 ---
-- name: Update apt cache
-  apt:
-    update_cache: yes
-    cache_valid_time: 3600
+- name: Common role - System setup
+  block:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      register: apt_update_result
+      
+    - name: Install essential packages
+      apt:
+        name:
+          - curl
+          - wget
+          - git
+          - vim
+          - htop
+          - net-tools
+        state: present
+  rescue:
+    - name: Handle apt cache failure
+      debug:
+        msg: "Apt cache update failed. Attempting fix with --fix-missing"
+      
+    - name: Retry with fix-missing
+      apt:
+        update_cache: yes
+        fix_broken: yes
+      when: apt_update_result is failed
+      
+    - name: Re-attempt package installation
+      apt:
+        name:
+          - curl
+          - wget
+          - git
+          - vim
+          - htop
+          - net-tools
+        state: present
+  always:
+    - name: Log common role completion
+      file:
+        path: /tmp/common_role_completed.log
+        state: touch
+        mode: '0644'
+    - name: Write timestamp to log
+      lineinfile:
+        path: /tmp/common_role_completed.log
+        line: "Common role completed at {{ ansible_date_time.iso8601 }}"
+        create: yes
+  become: true
+  tags:
+    - packages
+    - common
 
-- name: Install essential packages
-  apt:
-    name:
-      - python3-pip
-      - python3-venv
-      - curl
-      - git
-      - vim
-      - htop
-      - tree
-      - net-tools
-      - wget
-    state: present
+- name: User management tasks
+  block:
+    - name: Create application user group
+      group:
+        name: appusers
+        state: present
+        system: yes
+        
+    - name: Create application user
+      user:
+        name: appuser
+        group: appusers
+        shell: /bin/bash
+        home: /home/appuser
+        create_home: yes
+        system: yes
+  rescue:
+    - name: Handle user creation failure
+      debug:
+        msg: "User creation failed - continuing with deployment"
+  always:
+    - name: Log user creation
+      debug:
+        msg: "User management tasks completed"
+  become: true
+  tags:
+    - users
+    - common

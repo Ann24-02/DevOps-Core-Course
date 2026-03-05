@@ -276,3 +276,17 @@ Questions? Check the course Moodle page or ask during office hours.
 cd labs/app_python
 pip install -r requirements.txt
 pytest tests/ -v
+```
+## CI/CD Status
+
+| Pipeline | Status |
+|----------|--------|
+| Python CI/CD | [![Python CI/CD](https://github.com/Ann24-02/DevOps-Core-Course/actions/workflows/python-ci.yml/badge.svg?branch=lab03)](https://github.com/Ann24-02/DevOps-Core-Course/actions/workflows/python-ci.yml) |
+| Ansible Deployment | [![Ansible Deployment](https://github.com/Ann24-02/DevOps-Core-Course/actions/workflows/ansible-deploy.yml/badge.svg?branch=lab03)](https://github.com/Ann24-02/DevOps-Core-Course/actions/workflows/ansible-deploy.yml) |
+
+## Current Deployment
+
+- **VM IP:** `89.169.140.142`
+- **Application:** http://89.169.140.142:8080
+- **Health Check:** http://89.169.140.142:8080/health
+- **Status:** ✅ Running
