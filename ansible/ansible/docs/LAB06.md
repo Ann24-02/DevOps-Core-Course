@@ -230,7 +230,7 @@ Tag deployments, keep previous configs, create rollback playbook.
 
 ## Summary
 
-**Total time spent:** \[ваше время\]
+**Total time spent:** \[3 hours\]
 
 **Key learnings:**\
 Blocks, tags, wipe logic, idempotency, CI/CD integration

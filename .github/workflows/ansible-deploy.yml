@@ -61,6 +61,8 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.VM_HOST }} >> ~/.ssh/known_hosts
+          # Проверка что ключ работает
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.VM_HOST }} "echo 'SSH connection successful'"
 
       - name: Deploy with Ansible
         env:
