@@ -56,7 +56,7 @@ jobs:
           echo "$ANSIBLE_VAULT_PASSWORD" > /tmp/vault_pass
           ansible-playbook -i inventory playbooks/deploy.yml \
             --vault-password-file /tmp/vault_pass \
-            --extra-vars "dockerhub_username=$DOCKER_USERNAME dockerhub_password=$DOCKER_PASSWORD"
+            --extra-vars "dockerhub_username=$DOCKER_USERNAME dockerhub_password=$DOCKER_PASSWORD app_name=devops-app"
           rm /tmp/vault_pass
 
       - name: Verify deployment
