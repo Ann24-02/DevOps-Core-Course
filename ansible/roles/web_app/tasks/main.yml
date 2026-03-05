@@ -1,4 +1,9 @@
 ---
+- name: Include wipe tasks
+  include_tasks: wipe.yml
+  when: web_app_wipe | default(false) | bool
+  tags:
+    - web_app_wipe
 - name: Log in to Docker Hub
   docker_login:
     username: "{{ dockerhub_username }}"

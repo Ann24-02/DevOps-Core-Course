@@ -1,52 +1,106 @@
 ---
-- name: Install required system packages
-  apt:
-    name:
-      - apt-transport-https
-      - ca-certificates
-      - curl
-      - software-properties-common
-      - python3-pip
-      - virtualenv
-      - python3-setuptools
-    state: present
+- name: Docker installation
+  block:
+    - name: Install prerequisites
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+        state: present
+        update_cache: yes
 
-- name: Add Docker GPG key
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+      register: gpg_result
 
-- name: Add Docker repository
-  apt_repository:
-    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
-    state: present
+    - name: Add Docker repository
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
 
-- name: Install Docker packages
-  apt:
-    name:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
-      - docker-compose-plugin
-    state: present
-    update_cache: yes
+    - name: Install Docker
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+        state: present
+        update_cache: yes
+  rescue:
+    - name: Handle Docker installation failure
+      debug:
+        msg: "Docker installation failed. Retrying in 10 seconds..."
+        
+    - name: Wait before retry
+      wait_for:
+        timeout: 10
+        
+    - name: Retry Docker installation
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+        state: present
+        update_cache: yes
+  always:
+    - name: Ensure Docker service is enabled and started
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+  become: true
+  tags:
+    - docker_install
+    - docker
 
-- name: Start and enable Docker service
-  systemd:
-    name: docker
-    state: started
-    enabled: yes
-
-- name: Add user to docker group
-  user:
-    name: ubuntu
-    groups: docker
-    append: yes
-  notify: restart docker
-
-- name: Install Docker Python module
-  pip:
-    name:
-      - docker
-      - docker-compose
-    state: present
+- name: Docker configuration
+  block:
+    - name: Add user to docker group
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+        
+    - name: Configure Docker daemon
+      template:
+        src: daemon.json.j2
+        dest: /etc/docker/daemon.json
+      notify: restart docker
+    - name: Install pip
+      apt:
+        name: python3-pip
+        state: present
+      become: true
+      tags:
+        - docker_install
+    - name: Install Docker Python module
+      pip:
+        name:
+          - docker
+          - docker-compose
+        state: present
+  rescue:
+    - name: Handle configuration failure
+      debug:
+        msg: "Docker configuration encountered issues"
+  always:
+    - name: Verify Docker installation
+      command: docker --version
+      register: docker_version
+      changed_when: false
+      
+    - name: Display Docker version
+      debug:
+        msg: "Docker installed: {{ docker_version.stdout }}"
+  become: true
+  tags:
+    - docker_config
+    - docker

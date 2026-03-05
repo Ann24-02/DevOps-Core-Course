@@ -1,0 +1,24 @@
+---
+- name: Wipe web application
+  block:
+    - name: Stop and remove container
+      docker_container:
+        name: "{{ app_name }}"
+        state: absent
+      ignore_errors: yes
+      register: stop_result
+
+    - name: Remove Docker image
+      docker_image:
+        name: "{{ docker_image }}:{{ docker_tag | default('latest') }}"
+        state: absent
+        force_absent: yes
+      ignore_errors: yes
+      when: stop_result is success
+
+    - name: Log wipe completion
+      debug:
+        msg: "Application {{ app_name }} wiped successfully"
+
+  tags:
+    - web_app_wipe

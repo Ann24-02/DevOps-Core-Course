@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  {{ app_name }}:
+    image: "{{ docker_image }}:{{ docker_tag | default('latest') }}"
+    container_name: {{ app_name }}
+    restart: unless-stopped
+    ports:
+      - "{{ app_port }}:{{ app_internal_port }}"
+    environment:
+      - APP_NAME={{ app_name }}
+      - APP_ENV={{ app_environment | default('production') }}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
