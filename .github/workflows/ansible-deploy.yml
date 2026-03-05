@@ -49,7 +49,10 @@ jobs:
 
       - name: Install Ansible and dependencies
         run: |
-          pip install ansible docker docker-compose
+          sudo apt update
+          sudo apt install -y ansible python3-pip
+          pip3 install docker
+          pip3 install 'docker-compose==1.29.2' || echo "docker-compose installed with warnings"
           ansible-galaxy collection install community.docker
 
       - name: Setup SSH key
