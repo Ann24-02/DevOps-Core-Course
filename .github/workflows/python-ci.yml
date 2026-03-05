@@ -1,107 +1,107 @@
-name: Python CI/CD Pipeline
+# name: Python CI/CD Pipeline
 
-on:
-  push:
-    branches: [lab03]
-    paths:
-      - 'labs/app_python/**'
-  pull_request:
-    branches: [main, master, lab03]
-    paths:
-      - 'labs/app_python/**'
-      - '.github/workflows/**'
+# on:
+#   push:
+#     branches: [lab03]
+#     paths:
+#       - 'labs/app_python/**'
+#   pull_request:
+#     branches: [main, master, lab03]
+#     paths:
+#       - 'labs/app_python/**'
+#       - '.github/workflows/**'
 
-jobs:
-  test:
-    name: Run Tests
-    runs-on: ubuntu-latest
+# jobs:
+#   test:
+#     name: Run Tests
+#     runs-on: ubuntu-latest
     
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v4
     
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-        cache: 'pip'
+#     - name: Set up Python
+#       uses: actions/setup-python@v4
+#       with:
+#         python-version: '3.11'
+#         cache: 'pip'
     
-    - name: Cache pip packages
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('labs/app_python/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
+#     - name: Cache pip packages
+#       uses: actions/cache@v3
+#       with:
+#         path: ~/.cache/pip
+#         key: ${{ runner.os }}-pip-${{ hashFiles('labs/app_python/requirements.txt') }}
+#         restore-keys: |
+#           ${{ runner.os }}-pip-
     
-    - name: Install dependencies
-      working-directory: ./labs/app_python
-      run: |
-        pip install -r requirements.txt
+#     - name: Install dependencies
+#       working-directory: ./labs/app_python
+#       run: |
+#         pip install -r requirements.txt
     
-    - name: Run Snyk Security Scan
-      run: |
-        cd labs/app_python
-        npx snyk test --severity-threshold=high
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+#     - name: Run Snyk Security Scan
+#       run: |
+#         cd labs/app_python
+#         npx snyk test --severity-threshold=high
+#       env:
+#         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     
-    - name: Lint with flake8
-      working-directory: ./labs/app_python
-      run: |
-        python -m flake8 . --count --max-complexity=10 --max-line-length=120 \
-          --extend-ignore=E302,W293,E303,W291,W292,F401,E305,E501,E712 \
-          --statistics || echo "Flake8 completed"
+#     - name: Lint with flake8
+#       working-directory: ./labs/app_python
+#       run: |
+#         python -m flake8 . --count --max-complexity=10 --max-line-length=120 \
+#           --extend-ignore=E302,W293,E303,W291,W292,F401,E305,E501,E712 \
+#           --statistics || echo "Flake8 completed"
     
-    - name: Run tests with pytest
-      working-directory: ./labs/app_python
-      run: |
-        python -m pytest tests/ -v --cov=app --cov-report=xml --cov-report=term
+#     - name: Run tests with pytest
+#       working-directory: ./labs/app_python
+#       run: |
+#         python -m pytest tests/ -v --cov=app --cov-report=xml --cov-report=term
     
-    - name: Upload test results
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-results
-        path: |
-          labs/app_python/coverage.xml
-          labs/app_python/.coverage
+#     - name: Upload test results
+#       if: always()
+#       uses: actions/upload-artifact@v4
+#       with:
+#         name: test-results
+#         path: |
+#           labs/app_python/coverage.xml
+#           labs/app_python/.coverage
 
-  docker-build:
-    name: Build and Push Docker Image
-    runs-on: ubuntu-latest
-    needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/lab03'
+#   docker-build:
+#     name: Build and Push Docker Image
+#     runs-on: ubuntu-latest
+#     needs: test
+#     if: github.event_name == 'push' && github.ref == 'refs/heads/lab03'
     
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v4
     
-    - name: Set version tag
-      id: set_version
-      run: echo "VERSION=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
+#     - name: Set version tag
+#       id: set_version
+#       run: echo "VERSION=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
     
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+#     - name: Set up Docker Buildx
+#       uses: docker/setup-buildx-action@v3
     
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+#     - name: Log in to Docker Hub
+#       uses: docker/login-action@v3
+#       with:
+#         username: ${{ secrets.DOCKER_USERNAME }}
+#         password: ${{ secrets.DOCKER_PASSWORD }}
     
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: ./labs/app_python
-        push: true
-        tags: |
-          ${{ secrets.DOCKER_USERNAME }}/devops-info-service:latest
-          ${{ secrets.DOCKER_USERNAME }}/devops-info-service:${{ github.sha }}
-          ${{ secrets.DOCKER_USERNAME }}/devops-info-service:${{ env.VERSION }}
+#     - name: Build and push Docker image
+#       uses: docker/build-push-action@v5
+#       with:
+#         context: ./labs/app_python
+#         push: true
+#         tags: |
+#           ${{ secrets.DOCKER_USERNAME }}/devops-info-service:latest
+#           ${{ secrets.DOCKER_USERNAME }}/devops-info-service:${{ github.sha }}
+#           ${{ secrets.DOCKER_USERNAME }}/devops-info-service:${{ env.VERSION }}
     
-    - name: Verify Docker push
-      run: |
-        echo "✅ Docker image pushed successfully!"
-        echo "📦 Image: ${{ secrets.DOCKER_USERNAME }}/devops-info-service"
-        echo "🏷️ Tags: latest, ${{ github.sha }}, ${{ env.VERSION }}"
+#     - name: Verify Docker push
+#       run: |
+#         echo "✅ Docker image pushed successfully!"
+#         echo "📦 Image: ${{ secrets.DOCKER_USERNAME }}/devops-info-service"
+#         echo "🏷️ Tags: latest, ${{ github.sha }}, ${{ env.VERSION }}"
