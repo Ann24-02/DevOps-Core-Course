@@ -13,3 +13,4 @@ test
 **/*.tfstate
 **/*.tfstate.*
 **/.terraform/
+ansible/inventory/hosts.ini

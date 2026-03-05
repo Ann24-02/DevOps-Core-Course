@@ -30,14 +30,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Install Ansible and Python Docker module
+      - name: Setup Docker and Ansible
         run: |
           sudo apt update
           sudo apt install -y ansible python3-pip
           pip3 install docker
           ansible-galaxy collection install community.docker
-          echo "✅ Docker version: $(docker --version)"
-          echo "✅ Ansible version: $(ansible --version | head -1)"
+          sudo systemctl start docker
+          sudo systemctl enable docker
 
       - name: Setup SSH
         run: |
@@ -56,11 +56,11 @@ jobs:
           echo "$ANSIBLE_VAULT_PASSWORD" > /tmp/vault_pass
           ansible-playbook -i inventory playbooks/deploy.yml \
             --vault-password-file /tmp/vault_pass \
-            --extra-vars "dockerhub_username=$DOCKER_USERNAME dockerhub_password=$DOCKER_PASSWORD app_name=devops-app"
+            --extra-vars "dockerhub_username=$DOCKER_USERNAME dockerhub_password=$DOCKER_PASSWORD app_name=devops-app app_port=5000 app_internal_port=5000"
           rm /tmp/vault_pass
 
       - name: Verify deployment
         run: |
           sleep 10
-          curl -f http://${{ secrets.VM_HOST }}:8080/health || exit 1
-          echo "✅ Application is healthy!"
+          curl -f http://${{ secrets.VM_HOST }}:5000/health || exit 1
+          echo "✅ Application is healthy on port 5000!"
