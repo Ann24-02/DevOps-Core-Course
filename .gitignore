@@ -3,3 +3,13 @@ test
 *.tfstate.*
 .terraform.lock.hcl
 .terraform/
+# Terraform
+*.tfvars
+*.tfstate
+*.tfstate.backup
+.terraform/
+# Terraform
+**/terraform/*.tfvars
+**/*.tfstate
+**/*.tfstate.*
+**/.terraform/
