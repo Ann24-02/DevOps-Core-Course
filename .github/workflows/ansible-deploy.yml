@@ -2,11 +2,11 @@ name: Ansible Deployment
 
 on:
   push:
-    branches: [ lab03, lab6, main, master ]  # Добавили lab6
+    branches: [ lab03, lab6, main, master ]  
     paths:
       - 'ansible/**'
       - '.github/workflows/ansible-deploy.yml'
-  workflow_dispatch:  # Добавьте это для ручного запуска
+  workflow_dispatch: 
 
 jobs:
   lint:
