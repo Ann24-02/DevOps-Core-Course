@@ -69,12 +69,14 @@ jobs:
       - name: Deploy with Ansible
         env:
           ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
           cd ansible
           echo "$ANSIBLE_VAULT_PASSWORD" > /tmp/vault_pass
           ansible-playbook -i inventory playbooks/deploy.yml \
             --vault-password-file /tmp/vault_pass \
-            -e "web_app_wipe=false"
+            --extra-vars "dockerhub_username=$DOCKER_USERNAME dockerhub_password=$DOCKER_PASSWORD"
           rm /tmp/vault_pass
 
       - name: Verify deployment
