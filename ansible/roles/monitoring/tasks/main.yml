@@ -1,0 +1,7 @@
+---
+- name: Include monitoring setup
+  import_tasks: setup.yml
+
+- name: Deploy monitoring stack
+  import_tasks: deploy.yml
+
