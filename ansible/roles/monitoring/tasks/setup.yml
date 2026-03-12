@@ -1,0 +1,43 @@
+---
+- name: Create monitoring base directory
+  file:
+    path: "{{ monitoring_base_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Create Loki directory
+  file:
+    path: "{{ monitoring_base_dir }}/loki"
+    state: directory
+    mode: "0755"
+
+- name: Create Promtail directory
+  file:
+    path: "{{ monitoring_base_dir }}/promtail"
+    state: directory
+    mode: "0755"
+
+- name: Create docs directory
+  file:
+    path: "{{ monitoring_base_dir }}/docs"
+    state: directory
+    mode: "0755"
+
+- name: Template docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ monitoring_base_dir }}/docker-compose.yml"
+    mode: "0644"
+
+- name: Template Loki config
+  template:
+    src: loki-config.yml.j2
+    dest: "{{ monitoring_base_dir }}/loki/config.yml"
+    mode: "0644"
+
+- name: Template Promtail config
+  template:
+    src: promtail-config.yml.j2
+    dest: "{{ monitoring_base_dir }}/promtail/config.yml"
+    mode: "0644"
+
