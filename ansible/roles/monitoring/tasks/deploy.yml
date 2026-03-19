@@ -1,0 +1,49 @@
+---
+- name: Deploy Loki, Promtail and Grafana with Docker Compose v2
+  community.docker.docker_compose_v2:
+    project_src: "{{ monitoring_base_dir }}"
+    files:
+      - docker-compose.yml
+    state: present
+    pull: true
+  register: monitoring_compose
+
+- name: Wait for Loki to be ready
+  uri:
+    url: "http://localhost:{{ monitoring_loki_port }}/ready"
+    method: GET
+    status_code: 200
+  register: loki_health
+  retries: 10
+  delay: 5
+  until: loki_health.status == 200
+
+- name: Wait for Grafana to be ready
+  uri:
+    url: "http://localhost:{{ monitoring_grafana_port }}/api/health"
+    method: GET
+    status_code: 200
+  register: grafana_health
+  retries: 20
+  delay: 5
+  until: grafana_health.status == 200
+
+- name: Configure Grafana Loki data source via API
+  uri:
+    url: "http://localhost:{{ monitoring_grafana_port }}/api/datasources"
+    method: POST
+    user: admin
+    password: "{{ monitoring_grafana_admin_password }}"
+    force_basic_auth: true
+    status_code: [200, 409]
+    headers:
+      Content-Type: "application/json"
+    body_format: json
+    body:
+      name: Loki
+      type: loki
+      access: proxy
+      url: "http://loki:{{ monitoring_loki_port }}"
+      basicAuth: false
+  register: grafana_ds
+

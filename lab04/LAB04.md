@@ -9,7 +9,7 @@
 
 ## Student Information
 
-- **Name:** Anastasia Kutsukova  
+- **Name:** Anastasia Kuchumova  
 - **Date:** February 19, 2026  
 - **Course:** DevOps Core Course  
 - **GitHub Branch:** `lab04`

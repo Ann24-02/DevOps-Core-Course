@@ -1,0 +1,88 @@
+version: "3.8"
+
+networks:
+  logging:
+    driver: bridge
+
+volumes:
+  loki-data:
+  grafana-data:
+
+services:
+  loki:
+    image: "grafana/loki:{{ monitoring_loki_version }}"
+    container_name: loki
+    command: -config.file=/etc/loki/config.yml
+    ports:
+      - "{{ monitoring_loki_port }}:{{ monitoring_loki_port }}"
+    volumes:
+      - "{{ monitoring_base_dir }}/loki/config.yml:/etc/loki/config.yml:ro"
+      - loki-data:/var/loki
+    networks:
+      - logging
+    deploy:
+      resources:
+        limits:
+          cpus: "{{ monitoring_loki_cpu_limit }}"
+          memory: "{{ monitoring_loki_mem_limit }}"
+        reservations:
+          cpus: "{{ monitoring_loki_cpu_reservation }}"
+          memory: "{{ monitoring_loki_mem_reservation }}"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:{{ monitoring_loki_port }}/ready || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  promtail:
+    image: "grafana/promtail:{{ monitoring_promtail_version }}"
+    container_name: promtail
+    command: -config.file=/etc/promtail/config.yml
+    volumes:
+      - "{{ monitoring_base_dir }}/promtail/config.yml:/etc/promtail/config.yml:ro"
+      - /var/log:/var/log:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - logging
+    deploy:
+      resources:
+        limits:
+          cpus: "{{ monitoring_promtail_cpu_limit }}"
+          memory: "{{ monitoring_promtail_mem_limit }}"
+        reservations:
+          cpus: "{{ monitoring_promtail_cpu_reservation }}"
+          memory: "{{ monitoring_promtail_mem_reservation }}"
+
+  grafana:
+    image: "grafana/grafana:{{ monitoring_grafana_version }}"
+    container_name: grafana
+    ports:
+      - "{{ monitoring_grafana_port }}:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD={{ monitoring_grafana_admin_password }}
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+    volumes:
+      - grafana-data:/var/lib/grafana
+    networks:
+      - logging
+    depends_on:
+      loki:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "{{ monitoring_grafana_cpu_limit }}"
+          memory: "{{ monitoring_grafana_mem_limit }}"
+        reservations:
+          cpus: "{{ monitoring_grafana_cpu_reservation }}"
+          memory: "{{ monitoring_grafana_mem_reservation }}"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
