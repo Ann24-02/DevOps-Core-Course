@@ -1,0 +1,110 @@
+# HELP python_gc_objects_collected_total Objects collected during gc
+# TYPE python_gc_objects_collected_total counter
+python_gc_objects_collected_total{generation="0"} 263.0
+python_gc_objects_collected_total{generation="1"} 413.0
+python_gc_objects_collected_total{generation="2"} 0.0
+# HELP python_gc_objects_uncollectable_total Uncollectable objects found during GC
+# TYPE python_gc_objects_uncollectable_total counter
+python_gc_objects_uncollectable_total{generation="0"} 0.0
+python_gc_objects_uncollectable_total{generation="1"} 0.0
+python_gc_objects_uncollectable_total{generation="2"} 0.0
+# HELP python_gc_collections_total Number of times this generation was collected
+# TYPE python_gc_collections_total counter
+python_gc_collections_total{generation="0"} 77.0
+python_gc_collections_total{generation="1"} 6.0
+python_gc_collections_total{generation="2"} 0.0
+# HELP python_info Python platform information
+# TYPE python_info gauge
+python_info{implementation="CPython",major="3",minor="11",patchlevel="15",version="3.11.15"} 1.0
+# HELP http_requests_total Total HTTP requests
+# TYPE http_requests_total counter
+http_requests_total{endpoint="/",method="GET",status="200"} 1.0
+http_requests_total{endpoint="/health",method="GET",status="200"} 1.0
+http_requests_total{endpoint="/metrics",method="GET",status="200"} 1.0
+# HELP http_requests_created Total HTTP requests
+# TYPE http_requests_created gauge
+http_requests_created{endpoint="/",method="GET",status="200"} 1.773849537213592e+09
+http_requests_created{endpoint="/health",method="GET",status="200"} 1.7738495425742989e+09
+http_requests_created{endpoint="/metrics",method="GET",status="200"} 1.773849548778635e+09
+# HELP http_request_duration_seconds HTTP request duration in seconds
+# TYPE http_request_duration_seconds histogram
+http_request_duration_seconds_bucket{endpoint="/",le="0.005",method="GET"} 0.0
+http_request_duration_seconds_bucket{endpoint="/",le="0.01",method="GET"} 0.0
+http_request_duration_seconds_bucket{endpoint="/",le="0.025",method="GET"} 0.0
+http_request_duration_seconds_bucket{endpoint="/",le="0.05",method="GET"} 0.0
+http_request_duration_seconds_bucket{endpoint="/",le="0.1",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/",le="0.25",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/",le="0.5",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/",le="1.0",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/",le="2.5",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/",le="5.0",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/",le="10.0",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/",le="+Inf",method="GET"} 1.0
+http_request_duration_seconds_count{endpoint="/",method="GET"} 1.0
+http_request_duration_seconds_sum{endpoint="/",method="GET"} 0.06436419486999512
+http_request_duration_seconds_bucket{endpoint="/health",le="0.005",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/health",le="0.01",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/health",le="0.025",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/health",le="0.05",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/health",le="0.1",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/health",le="0.25",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/health",le="0.5",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/health",le="1.0",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/health",le="2.5",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/health",le="5.0",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/health",le="10.0",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/health",le="+Inf",method="GET"} 1.0
+http_request_duration_seconds_count{endpoint="/health",method="GET"} 1.0
+http_request_duration_seconds_sum{endpoint="/health",method="GET"} 0.0003399848937988281
+http_request_duration_seconds_bucket{endpoint="/metrics",le="0.005",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/metrics",le="0.01",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/metrics",le="0.025",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/metrics",le="0.05",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/metrics",le="0.1",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/metrics",le="0.25",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/metrics",le="0.5",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/metrics",le="1.0",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/metrics",le="2.5",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/metrics",le="5.0",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/metrics",le="10.0",method="GET"} 1.0
+http_request_duration_seconds_bucket{endpoint="/metrics",le="+Inf",method="GET"} 1.0
+http_request_duration_seconds_count{endpoint="/metrics",method="GET"} 1.0
+http_request_duration_seconds_sum{endpoint="/metrics",method="GET"} 0.0005228519439697266
+# HELP http_request_duration_seconds_created HTTP request duration in seconds
+# TYPE http_request_duration_seconds_created gauge
+http_request_duration_seconds_created{endpoint="/",method="GET"} 1.773849537213619e+09
+http_request_duration_seconds_created{endpoint="/health",method="GET"} 1.773849542574317e+09
+http_request_duration_seconds_created{endpoint="/metrics",method="GET"} 1.773849548778647e+09
+# HELP http_requests_in_progress Number of HTTP requests currently in progress
+# TYPE http_requests_in_progress gauge
+http_requests_in_progress 1.0
+# HELP devops_info_endpoint_calls_total Number of calls to specific endpoints
+# TYPE devops_info_endpoint_calls_total counter
+devops_info_endpoint_calls_total{endpoint="/",method="GET"} 1.0
+devops_info_endpoint_calls_total{endpoint="/health",method="GET"} 1.0
+# HELP devops_info_endpoint_calls_created Number of calls to specific endpoints
+# TYPE devops_info_endpoint_calls_created gauge
+devops_info_endpoint_calls_created{endpoint="/",method="GET"} 1.773849537149338e+09
+devops_info_endpoint_calls_created{endpoint="/health",method="GET"} 1.7738495425741482e+09
+# HELP devops_info_system_collection_seconds Time taken to collect system information
+# TYPE devops_info_system_collection_seconds histogram
+devops_info_system_collection_seconds_bucket{le="0.001"} 0.0
+devops_info_system_collection_seconds_bucket{le="0.005"} 0.0
+devops_info_system_collection_seconds_bucket{le="0.01"} 0.0
+devops_info_system_collection_seconds_bucket{le="0.025"} 0.0
+devops_info_system_collection_seconds_bucket{le="0.05"} 0.0
+devops_info_system_collection_seconds_bucket{le="0.1"} 1.0
+devops_info_system_collection_seconds_bucket{le="0.25"} 1.0
+devops_info_system_collection_seconds_bucket{le="0.5"} 1.0
+devops_info_system_collection_seconds_bucket{le="+Inf"} 1.0
+devops_info_system_collection_seconds_count 1.0
+devops_info_system_collection_seconds_sum 0.06367301940917969
+# HELP devops_info_system_collection_seconds_created Time taken to collect system information
+# TYPE devops_info_system_collection_seconds_created gauge
+devops_info_system_collection_seconds_created 1.773849493379888e+09
+# HELP devops_info_active_clients Number of active clients currently using the service
+# TYPE devops_info_active_clients gauge
+devops_info_active_clients 0.0
+# HELP devops_info_uptime_seconds Service uptime in seconds
+# TYPE devops_info_uptime_seconds gauge
+devops_info_uptime_seconds 81.478918
