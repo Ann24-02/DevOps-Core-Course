@@ -1,0 +1,13 @@
+replicaCount: 1
+environment:
+  LOG_LEVEL: "DEBUG"
+service:
+  type: NodePort
+  nodePort: 30086
+resources:
+  requests:
+    memory: "32Mi"
+    cpu: "50m"
+  limits:
+    memory: "64Mi"
+    cpu: "100m"
