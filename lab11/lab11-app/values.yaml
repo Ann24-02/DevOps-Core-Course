@@ -1,0 +1,17 @@
+image:
+  repository: nginx
+  tag: latest
+
+# Resource Limits (Task 2 requirement)
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "250m"
+  limits:
+    memory: "128Mi"
+    cpu: "500m"
+
+# Secrets (will be base64 encoded)
+secrets:
+  username: admin_user
+  password: S3cure#Pass123

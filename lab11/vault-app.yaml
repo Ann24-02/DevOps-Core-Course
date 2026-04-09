@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault-demo-app
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vault-app
+  template:
+    metadata:
+      labels:
+        app: vault-app
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "myapp-role"
+        vault.hashicorp.com/agent-inject-secret-config: "secret/data/myapp/config"
+    spec:
+      serviceAccountName: default
+      containers:
+      - name: app
+        image: alpine:latest
+        command: ["/bin/sh", "-c"]
+        args: ["echo 'Checking Vault secrets...'; sleep 10; echo '=== Secret Content ==='; cat /vault/secrets/config; sleep infinity"]

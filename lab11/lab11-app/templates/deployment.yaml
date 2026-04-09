@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "lab11-app.fullname" . }}
+  labels:
+    {{- include "lab11-app.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "lab11-app.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "lab11-app.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: IfNotPresent
+        # Resource Limits
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+        # Inject secrets as environment variables
+        env:
+        - name: APP_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "lab11-app.fullname" . }}-secrets
+              key: username
+        - name: APP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "lab11-app.fullname" . }}-secrets
+              key: password
+        command: ["/bin/sh", "-c"]
+        args: ["echo 'Container running...'; echo \"Username: $APP_USERNAME\"; echo \"Password: $APP_PASSWORD\"; sleep infinity"]
