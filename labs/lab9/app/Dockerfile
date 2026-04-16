@@ -1,19 +1,15 @@
-FROM python:3.13-slim
-
-
-RUN apt-get update && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-RUN groupadd -r appuser && useradd --no-log-init -r -g appuser appuser
+FROM python:3.9-slim
 
 WORKDIR /app
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY --chown=appuser:appuser . .
+COPY app.py .
 
-USER appuser
+# Создаем директорию для данных
+RUN mkdir -p /data
 
-EXPOSE 8080  
+EXPOSE 5000
 
 CMD ["python", "app.py"]

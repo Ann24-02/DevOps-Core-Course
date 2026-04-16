@@ -5,7 +5,7 @@ import platform
 import socket
 import time
 from datetime import datetime, timezone, timedelta
-from app import app, START_TIME, get_uptime
+from lab12.app import app, START_TIME, get_uptime
 
 @pytest.fixture
 def client():

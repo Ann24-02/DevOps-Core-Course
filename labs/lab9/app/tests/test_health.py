@@ -1,7 +1,7 @@
 import pytest
 import time
 import re
-from app import app
+from lab12.app import app
 
 @pytest.fixture
 def client():
