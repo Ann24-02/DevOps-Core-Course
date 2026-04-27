@@ -1,0 +1,21 @@
+Name:            bluegreen-demo
+Namespace:       bluegreen-test
+Status:          [32m✔[0m Healthy
+Strategy:        BlueGreen
+Images:          nginx:1.20 ([32mstable[0m, [32mactive[0m)
+Replicas:
+  Desired:       3
+  Current:       3
+  Updated:       3
+  Ready:         3
+  Available:     3
+
+NAME                                      KIND        STATUS        AGE    INFO
+⟳ bluegreen-demo                          Rollout     [32m✔[0m Healthy     8m6s   
+├──# revision:3                                                            
+│  └──⧉ [32m[32mbluegreen-demo-bbddd48d[0m[0m           ReplicaSet  [32m✔[0m Healthy     7m58s  [32mstable[0m,[32mactive[0m
+│     ├──□ bluegreen-demo-bbddd48d-6q9hf  Pod         [32m✔[0m Running     7m50s  ready:1/1
+│     ├──□ bluegreen-demo-bbddd48d-k64t4  Pod         [32m✔[0m Running     7m50s  ready:1/1
+│     └──□ bluegreen-demo-bbddd48d-x7fgb  Pod         [32m✔[0m Running     7m50s  ready:1/1
+└──# revision:2                                                            
+   └──⧉ bluegreen-demo-6b975dcb75         ReplicaSet  [0m•[0m ScaledDown  7m47s  

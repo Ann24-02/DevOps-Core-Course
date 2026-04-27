@@ -1,0 +1,26 @@
+Name:            canary-demo
+Namespace:       canary-test
+Status:          [32m✔[0m Healthy
+Strategy:        Canary
+  Step:          9/9
+  SetWeight:     100
+  ActualWeight:  100
+Images:          nginx:1.21 ([32mstable[0m)
+Replicas:
+  Desired:       5
+  Current:       5
+  Updated:       5
+  Ready:         5
+  Available:     5
+
+NAME                                    KIND        STATUS        AGE    INFO
+⟳ canary-demo                           Rollout     [32m✔[0m Healthy     16m    
+├──# revision:2                                                          
+│  └──⧉ [32mcanary-demo-b6f594546[0m           ReplicaSet  [32m✔[0m Healthy     15m    [32mstable[0m
+│     ├──□ canary-demo-b6f594546-zfmn2  Pod         [32m✔[0m Running     8m55s  ready:1/1
+│     ├──□ canary-demo-b6f594546-gphtt  Pod         [32m✔[0m Running     8m23s  ready:1/1
+│     ├──□ canary-demo-b6f594546-5x2t9  Pod         [32m✔[0m Running     7m52s  ready:1/1
+│     ├──□ canary-demo-b6f594546-pzvll  Pod         [32m✔[0m Running     7m21s  ready:1/1
+│     └──□ canary-demo-b6f594546-vtc4r  Pod         [32m✔[0m Running     6m50s  ready:1/1
+└──# revision:1                                                          
+   └──⧉ canary-demo-657d4f5c77          ReplicaSet  [0m•[0m ScaledDown  16m    
