@@ -1,0 +1,8 @@
+NAME           READY   STATUS    RESTARTS   AGE     IP             NODE       NOMINATED NODE   READINESS GATES
+visits-app-0   1/1     Running   0          2m57s   10.244.0.114   minikube   <none>           <none>
+visits-app-1   1/1     Running   0          6m31s   10.244.0.112   minikube   <none>           <none>
+visits-app-2   1/1     Running   0          6m30s   10.244.0.113   minikube   <none>           <none>
+NAME           READY   STATUS    RESTARTS   AGE     IP             NODE       NOMINATED NODE   READINESS GATES
+visits-app-0   1/1     Running   0          2m57s   10.244.0.114   minikube   <none>           <none>
+visits-app-1   1/1     Running   0          6m31s   10.244.0.112   minikube   <none>           <none>
+visits-app-2   1/1     Running   0          6m30s   10.244.0.113   minikube   <none>           <none>

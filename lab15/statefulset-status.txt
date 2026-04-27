@@ -1,0 +1,2 @@
+NAME         READY   AGE     CONTAINERS   IMAGES
+visits-app   3/3     6m28s   visits-app   nginx:1.20

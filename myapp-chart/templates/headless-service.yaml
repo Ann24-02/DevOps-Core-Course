@@ -1,0 +1,14 @@
+# Headless service for stable network identities
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.appName }}-headless
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  clusterIP: None
+  selector:
+    app: {{ .Values.appName }}
+  ports:
+  - port: {{ .Values.service.port }}
+    targetPort: {{ .Values.service.port }}

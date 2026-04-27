@@ -1,0 +1,4 @@
+NAME                STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+data-visits-app-0   Bound    pvc-43996ce3-07d0-4c3b-8847-727d47a9172d   1Gi        RWO            standard       <unset>                 6m37s
+data-visits-app-1   Bound    pvc-1899b4bc-c3c3-4d2f-822c-44d06b1c8d76   1Gi        RWO            standard       <unset>                 6m36s
+data-visits-app-2   Bound    pvc-cddfd01f-98fb-4c14-adca-af43a1ee7e38   1Gi        RWO            standard       <unset>                 6m35s

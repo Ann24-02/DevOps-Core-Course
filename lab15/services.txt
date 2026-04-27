@@ -1,0 +1,2 @@
+visits-app                      ClusterIP      10.105.179.220   <none>        80/TCP         7m36s
+visits-app-headless             ClusterIP      None             <none>        80/TCP         7m36s
