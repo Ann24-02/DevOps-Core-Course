@@ -1,9 +1,6 @@
 ```markdown
 # Lab 16 — Kubernetes Monitoring & Init Containers
 
-## Student: Anastasiia Kucumova
-## Date: May 2, 2026
-## Environment: Minikube / Kubernetes v1.32+
 
 ---
 
@@ -54,7 +51,7 @@ prometheus-prometheus-node-exporter-bvqpj                1/1     Running   0    
 
 **Dashboard**: Kubernetes / Compute Resources / Pod
 
-**CPU Usage Graph** (Screenshot: 2026-05-02 08.27.34.jpg):
+**CPU Usage Graph** 
 
 | Metric | Value |
 |--------|-------|
@@ -62,7 +59,7 @@ prometheus-prometheus-node-exporter-bvqpj                1/1     Running   0    
 | CPU Limits | ~0.1 cores |
 | CPU Actual Usage | ~0.06 - 0.08 cores |
 
-**Memory Usage WSS Graph** (Screenshot: 2026-05-02 08.27.41.jpg):
+
 
 | Metric | Value |
 |--------|-------|
@@ -81,7 +78,7 @@ prometheus-prometheus-node-exporter-bvqpj                1/1     Running   0    
 
 **Dashboard**: Kubernetes / Compute Resources / Namespace (Workloads)
 
-**Memory Quota Table** (Screenshot: 2026-05-02 08.27.48.jpg):
+**Memory Quota Table** 
 
 | Pod Name | Memory Requests | Memory Limits | Namespace |
 |----------|-----------------|---------------|-----------|
@@ -218,7 +215,6 @@ sum(rate(container_network_receive_bytes_total{namespace="default"}[5m])) by (po
 
 ### Question 6: Active Alerts
 
-**Alertmanager UI**: http://localhost:9093 (Screenshot: 2026-05-02 08.15.27.png)
 
 **Alert Summary**:
 
