@@ -23,9 +23,7 @@ $ ansible-playbook playbooks/provision.yml --list-tags
 TASK TAGS: [common, docker, docker_config, docker_install, packages, users]
 ```
 
-**Evidence of selective execution:**
 
-\[Вставьте скриншот или вывод команды с `--tags docker`\]
 
 ------------------------------------------------------------------------
 
