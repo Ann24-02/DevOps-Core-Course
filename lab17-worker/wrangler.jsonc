@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+  "name": "lab17-worker",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-05-08",
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "APP_NAME": "lab17-worker-api",
+    "APP_VERSION": "v1.0.0",
+    "API_VERSION": "2024.01",
+    "DEFAULT_LANG": "en"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "MY_KV",
+      "id": "080422d484ee44cc86c4baeb59c1f060"
+    }
+  ]
+}
